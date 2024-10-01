@@ -26,7 +26,7 @@ public class BuildingAPI {
 //    public ResponseEntity<BuildingDTO> AddOrUpdateBuilding(@RequestBody BuildingDTO buildingDTO){
 //        // xuống db để update
 //        return ResponseEntity.ok(iBuildingService.addOrUpdate(buildingDTO));
-//    }
+//    } nhánh Cas
     @PostMapping
     public ResponseEntity<BuildingDTO> addOrUpdateBuilding(
         @ModelAttribute BuildingDTO buildingDTO,
