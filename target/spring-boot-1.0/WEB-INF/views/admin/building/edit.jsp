@@ -202,13 +202,14 @@
                         <div class="form-group">
                             <label class="col-xs-3 title_text">Hình Đại Diện</label>
                             <div class="col-xs-9">
-                                <input type="file" name="file" required /><br>
-                                <c:if test="${not empty modelEdit.imageName}">
-                                    <div>
-                                        <span>File đã tải lên: ${modelEdit.imageName}</span><br>
-                                        <img src="${pageContext.request.contextPath}/uploads/${modelEdit.imageName}" alt="Uploaded Image" style="max-width: 300px; max-height: 300px;" />
-                                    </div>
-                                </c:if>
+                                <form:input path="imageName" class="form-control"/>
+<%--                                <input type="file" name="file" required /><br>--%>
+<%--                                <c:if test="${not empty modelEdit.imageName}">--%>
+<%--                                    <div>--%>
+<%--                                        <span>File đã tải lên: ${modelEdit.imageName}</span><br>--%>
+<%--                                        <img src="${pageContext.request.contextPath}/uploads/${modelEdit.imageName}" alt="Uploaded Image" style="max-width: 300px; max-height: 300px;" />--%>
+<%--                                    </div>--%>
+<%--                                </c:if>--%>
 
                             </div>
                         </div>
@@ -239,112 +240,112 @@
 <%-- sử lý js --%>
 <script>
     // sử dụng JS lấy data
-    <%--$('#btnAddOrUpdateBuilding').click(function() {--%>
-    <%--    var data = {};--%>
-    <%--    var typecode = [];--%>
-    <%--    var formData = $('#form_edit').serializeArray();--%>
-    <%--    console.log(formData);--%>
-    <%--    $.each(formData, function (i, v) {--%>
-    <%--        if (v.name != 'typeCode') {--%>
-    <%--            data["" + v.name + ""] = v.value;--%>
-    <%--        } else {--%>
-    <%--            typecode.push(v.value);--%>
-
-    <%--        }--%>
-    <%--    });--%>
-    <%--    data['typeCode'] = typecode;--%>
-    <%--    if(typecode!= ''){--%>
-    <%--        addOrUpdateBuilding(data) ;--%>
-    <%--    }else{--%>
-    <%--        window.location.href ="<c:url value="/admin/building-edit?typeCode=require" />" ;--%>
-    <%--    }--%>
-    <%--}) ;--%>
-    $('#btnAddOrUpdateBuilding').click(function () {
-        var formData = new FormData(); // Tạo đối tượng FormData
+    $('#btnAddOrUpdateBuilding').click(function() {
+        var data = {};
         var typecode = [];
-
-        // Lấy tất cả các giá trị từ form (trừ ảnh) và thêm vào formData
-        $('#form_edit').find('input, select, textarea').each(function () {
-            var input = $(this);
-
-            if (input.attr('type') === 'file') {
-                // Nếu là trường file, thêm file vào formData
-                if (input[0].files.length > 0) {
-                    formData.append(input.attr('name'), input[0].files[0]);
-                }
-            } else if (input.attr('name') === 'typeCode') {
-                // Lưu typeCode vào mảng
-                typecode.push(input.val());
+        var formData = $('#form_edit').serializeArray();
+        console.log(formData);
+        $.each(formData, function (i, v) {
+            if (v.name != 'typeCode') {
+                data["" + v.name + ""] = v.value;
             } else {
-                // Thêm dữ liệu text thông thường
-                formData.append(input.attr('name'), input.val());
+                typecode.push(v.value);
+
             }
         });
-
-        // Thêm typeCode mảng vào formData
-        formData.append('typeCode', typecode);
-
-        // Kiểm tra nếu typeCode không rỗng, gửi yêu cầu
-        if (typecode.length !== 0) {
-            addOrUpdateBuilding(formData);
-        } else {
-            window.location.href = "<c:url value='/admin/building-edit?typeCode=require' />";
+        data['typeCode'] = typecode;
+        if(typecode!= ''){
+            addOrUpdateBuilding(data) ;
+        }else{
+            window.location.href ="<c:url value="/admin/building-edit?typeCode=require" />" ;
         }
-    });
-    function addOrUpdateBuilding(data) {
-        $.ajax({
-            type: "POST",
-            url: "/api/building",
-            data: data, // Sử dụng FormData đã được tạo ở bước trước
-            processData: false,  // Bắt buộc phải là false khi dùng FormData
-            contentType: false,  // Bắt buộc phải là false khi dùng FormData
-            success: function (response, status, xhr) {
-                if (xhr.status === 200 || xhr.status === 204) {
-                    console.log("Operation successful");
-                    swal({
-                        title: "Thành Công",
-                        icon: "success",  // Kiểu thông báo (success, error, warning)
-                        text: "Bạn Đã Thêm Hoặc Cập Nhật Thành Công",
-                        confirmButtonText: "OK",
-                        confirmButtonClass: "btn btn-success"
-                    });
-                }
-            },
-            error: function (response) {
-                console.log(response);
-            },
-        });
-    }
+    }) ;
+    <%--$('#btnAddOrUpdateBuilding').click(function () {--%>
+    <%--    var formData = new FormData(); // Tạo đối tượng FormData--%>
+    <%--    var typecode = [];--%>
 
+    <%--    // Lấy tất cả các giá trị từ form (trừ ảnh) và thêm vào formData--%>
+    <%--    $('#form_edit').find('input, select, textarea').each(function () {--%>
+    <%--        var input = $(this);--%>
 
-    // function addOrUpdateBuilding(data){
+    <%--        if (input.attr('type') === 'file') {--%>
+    <%--            // Nếu là trường file, thêm file vào formData--%>
+    <%--            if (input[0].files.length > 0) {--%>
+    <%--                formData.append(input.attr('name'), input[0].files[0]);--%>
+    <%--            }--%>
+    <%--        } else if (input.attr('name') === 'typeCode') {--%>
+    <%--            // Lưu typeCode vào mảng--%>
+    <%--            typecode.push(input.val());--%>
+    <%--        } else {--%>
+    <%--            // Thêm dữ liệu text thông thường--%>
+    <%--            formData.append(input.attr('name'), input.val());--%>
+    <%--        }--%>
+    <%--    });--%>
+
+    <%--    // Thêm typeCode mảng vào formData--%>
+    <%--    formData.append('typeCode', typecode);--%>
+
+    <%--    // Kiểm tra nếu typeCode không rỗng, gửi yêu cầu--%>
+    <%--    if (typecode.length !== 0) {--%>
+    <%--        addOrUpdateBuilding(formData);--%>
+    <%--    } else {--%>
+    <%--        window.location.href = "<c:url value='/admin/building-edit?typeCode=require' />";--%>
+    <%--    }--%>
+    <%--});--%>
+    // function addOrUpdateBuilding(data) {
     //     $.ajax({
-    //         // type :loại GEt hay post, del ...
     //         type: "POST",
-    //         // đặt đường dẫn mong muốn còn với url bên cotrol thì đặt theo trang : bởi vì url luân chuyển với api
     //         url: "/api/building",
-    //         data: JSON.stringify(data),
-    //         // client -> server thì dùng contenType định dạng
-    //         contentType: "application/json",
-    //         // server - > client thì dùng DataType định dạng
-    //         dataType: "JSON",
-    //         success: function (respond,status, xhr) {
+    //         data: data, // Sử dụng FormData đã được tạo ở bước trước
+    //         processData: false,  // Bắt buộc phải là false khi dùng FormData
+    //         contentType: false,  // Bắt buộc phải là false khi dùng FormData
+    //         success: function (response, status, xhr) {
     //             if (xhr.status === 200 || xhr.status === 204) {
-    //                 console.log("Delete successful");
+    //                 console.log("Operation successful");
     //                 swal({
     //                     title: "Thành Công",
     //                     icon: "success",  // Kiểu thông báo (success, error, warning)
-    //                     text :"Bạn Đã Thêm Hoặc Cập Nhật Thành Công",
+    //                     text: "Bạn Đã Thêm Hoặc Cập Nhật Thành Công",
     //                     confirmButtonText: "OK",
     //                     confirmButtonClass: "btn btn-success"
     //                 });
     //             }
     //         },
-    //         error: function (respond) {
-    //             console.log(respond);
+    //         error: function (response) {
+    //             console.log(response);
     //         },
-    //     })
+    //     });
     // }
+
+
+    function addOrUpdateBuilding(data){
+        $.ajax({
+            // type :loại GEt hay post, del ...
+            type: "POST",
+            // đặt đường dẫn mong muốn còn với url bên cotrol thì đặt theo trang : bởi vì url luân chuyển với api
+            url: "/api/building",
+            data: JSON.stringify(data),
+            // client -> server thì dùng contenType định dạng
+            contentType: "application/json",
+            // server - > client thì dùng DataType định dạng
+            dataType: "JSON",
+            success: function (respond,status, xhr) {
+                if (xhr.status === 200 || xhr.status === 204) {
+                    console.log("Delete successful");
+                    swal({
+                        title: "Thành Công",
+                        icon: "success",  // Kiểu thông báo (success, error, warning)
+                        text :"Bạn Đã Thêm Hoặc Cập Nhật Thành Công",
+                        confirmButtonText: "OK",
+                        confirmButtonClass: "btn btn-success"
+                    });
+                }
+            },
+            error: function (respond) {
+                console.log(respond);
+            },
+        })
+    }
         // call API : jQuery AJAX Methods
 
     // cách hủy thao tác
