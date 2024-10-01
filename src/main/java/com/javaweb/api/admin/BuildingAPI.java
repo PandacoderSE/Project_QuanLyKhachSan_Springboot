@@ -28,8 +28,8 @@ public class BuildingAPI {
 //        return ResponseEntity.ok(iBuildingService.addOrUpdate(buildingDTO));
 //    }
     // Tôi đang ở nhánh handmade
-@PostMapping
-public ResponseEntity<BuildingDTO> addOrUpdateBuilding(
+    @PostMapping
+    public ResponseEntity<BuildingDTO> addOrUpdateBuilding(
         @ModelAttribute BuildingDTO buildingDTO,
         @RequestParam("file") MultipartFile file) throws IOException {
 
