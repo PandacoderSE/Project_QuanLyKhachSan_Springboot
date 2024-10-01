@@ -27,7 +27,7 @@ public class BuildingAPI {
 //        // xuống db để update
 //        return ResponseEntity.ok(iBuildingService.addOrUpdate(buildingDTO));
 //    }
-    @PostMap " ping
+    @PostMapping
     public ResponseEntity<BuildingDTO> addOrUpdateBuilding(
         @ModelAttribute BuildingDTO buildingDTO,
         @RequestParam("file") MultipartFile file) throws IOException {
