@@ -1,6 +1,7 @@
 package com.javaweb.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "rentarea")
@@ -42,5 +43,18 @@ public class RentAreaEntity {
     @Override
     public String toString() {
         return  value.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RentAreaEntity rentArea = (RentAreaEntity) o;
+        return Objects.equals(Id, rentArea.Id) && Objects.equals(value, rentArea.value) && Objects.equals(buildingEntity, rentArea.buildingEntity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Id, value, buildingEntity);
     }
 }

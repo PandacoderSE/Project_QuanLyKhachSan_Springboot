@@ -42,6 +42,7 @@ public class BuildingConverter {
         bnew.setManagerphonenumber(dto.getManagerPhone());
         bnew.setRentprice(dto.getRentPrice());
         bnew.setAvatar(dto.getImageName());
+        bnew.setDecorationtime(dto.getImage());
         bnew.setRentpricedescription(dto.getRentPriceDescription());
         return bnew ;
     }
@@ -61,6 +62,7 @@ public class BuildingConverter {
         bnew.setRentPrice(bet.getRentprice());
         bnew.setRentPriceDescription(bet.getRentpricedescription());
         bnew.setImageName(bet.getAvatar());
+        bnew.setImage(bet.getDecorationtime());
         // dùng hàm này nhanh vì nó là quan hệ 1 nhiều
         List<RentAreaEntity> rentareas = bet.getItems();
         bnew.setRentArea(rentareas.stream().map(it -> it.toString()).collect(Collectors.joining(",")));

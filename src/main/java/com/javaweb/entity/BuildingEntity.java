@@ -82,7 +82,7 @@ public class BuildingEntity extends BaseEntity{
     @Column(name = "managerphone")
     private String managerphonenumber;
 
-    @OneToMany(mappedBy = "buildingEntity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "buildingEntity", fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<RentAreaEntity> items = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)

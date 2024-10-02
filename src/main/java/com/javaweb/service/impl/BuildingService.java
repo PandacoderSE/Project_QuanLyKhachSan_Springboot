@@ -16,6 +16,7 @@ import com.javaweb.repository.UserRepository;
 import com.javaweb.repository.custom.BuildingRepositoryCustom;
 import com.javaweb.repository.custom.RentAreaRepositoryCustom;
 import com.javaweb.service.IBuildingService;
+import com.javaweb.service.IRentAreaService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +43,7 @@ public class BuildingService implements IBuildingService {
     @Autowired
     private RentareaRepository rentAreaRepository;
     @Autowired
-    private ModelMapper modelMapper ;
+    private IRentAreaService iRentAreaService ;
     @Override
     public List<BuildingSearchResponse> findAll(Map<String, Object> params, List<String> typeCode,Pageable pageable) {
         List<BuildingEntity> listSR = buildingRepositoryCustom.findAll(params,typeCode,pageable) ;
@@ -103,20 +104,10 @@ public class BuildingService implements IBuildingService {
             bnew.setRentprice(dto.getRentPrice());
             bnew.setRentpricedescription(dto.getRentPriceDescription());
             bnew.setAvatar(dto.getImageName());
+            // Xử lý lại khi dùng cascade
+            bnew.getItems().clear();
+            bnew.getItems().addAll(iRentAreaService.listRentArea(dto.getRentArea(),bnew));
             buildingRepository.save(bnew) ;
-            List<String> list = Arrays.asList(dto.getRentArea().split(","));
-            List<RentAreaEntity> ListrentArea = rentAreaRepositoryCustom.findAll(dto.getId()) ;
-            for (RentAreaEntity item : ListrentArea) {
-                rentAreaRepository.delete(item);
-            }
-
-            for (String it: list) {
-                RentAreaEntity rnew = new RentAreaEntity() ;
-                rnew.setValue(Long.parseLong(it.trim()));
-                rnew.setBuildingEntity(bnew);
-                rentAreaRepository.save(rnew) ;
-            }
-
         }else{
             BuildingEntity bnew = new BuildingEntity() ;
             bnew.setName(dto.getName());
@@ -133,28 +124,17 @@ public class BuildingService implements IBuildingService {
             bnew.setRentprice(dto.getRentPrice());
             bnew.setRentpricedescription(dto.getRentPriceDescription());
             bnew.setAvatar(dto.getImageName());
+            bnew.setItems(iRentAreaService.listRentArea(dto.getRentArea(),bnew));
             buildingRepository.save(bnew) ;
-            List<String> list = Arrays.asList(dto.getRentArea().split(","));
-            for (String it: list) {
-                RentAreaEntity rnew = new RentAreaEntity() ;
-                rnew.setValue(Long.parseLong(it.trim()));
-                rnew.setBuildingEntity(bnew);
-                rentAreaRepository.save(rnew) ;
-            }
-
         }
         return dto ;
     }
 
     @Override
     public void Delete(List<Long> ids) {
+        //dùng cascade chỉ cần xóa 1 bảng các bảng khác tự xóa theo 
         for (Long id: ids) {
             BuildingEntity bdelete = buildingRepository.findById(id).get() ;
-            List<RentAreaEntity> ListrentArea = rentAreaRepositoryCustom.findAll(id) ;
-            for (RentAreaEntity item : ListrentArea) {
-                rentAreaRepository.delete(item);
-            }
-            bdelete.getUserEntity().clear();
             buildingRepository.delete(bdelete);
         }
     }

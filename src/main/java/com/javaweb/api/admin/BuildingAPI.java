@@ -22,44 +22,13 @@ import java.util.List;
 public class BuildingAPI {
     @Autowired
     private IBuildingService iBuildingService ;
-//    @PostMapping
-//    public ResponseEntity<BuildingDTO> AddOrUpdateBuilding(@RequestBody BuildingDTO buildingDTO){
-//        // xuống db để update
-//        return ResponseEntity.ok(iBuildingService.addOrUpdate(buildingDTO));
-//    } nhánh Cas
     @PostMapping
-    public ResponseEntity<BuildingDTO> addOrUpdateBuilding(
-        @ModelAttribute BuildingDTO buildingDTO,
-        @RequestParam("file") MultipartFile file) throws IOException {
-
-    // Kiểm tra và xử lý file ảnh
-    if (file != null && !file.isEmpty()) {
-
-        String uploadDir = "uploads";
-        File uploadDirFile = new File(uploadDir);
-        if (!uploadDirFile.exists()) {
-            uploadDirFile.mkdirs();
-        }
-
-        String fileName = file.getOriginalFilename();
-        String filePath = uploadDir + fileName;
-
-        try {
-            file.transferTo(new File(filePath)); // Lưu tệp vào thư mục uploads
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-
-        // Lưu đường dẫn file vào DTO (hoặc lưu theo logic của bạn)
-        buildingDTO.setImageName(fileName);
+    public ResponseEntity<BuildingDTO> AddOrUpdateBuilding(@RequestBody BuildingDTO buildingDTO){
+        // xuống db để update
+        return ResponseEntity.ok(iBuildingService.addOrUpdate(buildingDTO));
     }
 
-    // Tiến hành lưu hoặc cập nhật building xuống database
-    BuildingDTO savedBuilding = iBuildingService.addOrUpdate(buildingDTO);
 
-    return ResponseEntity.ok(savedBuilding);
-}
     @DeleteMapping("/{ids}")
     public ResponseEntity<Void> DeleteBuilding(@PathVariable List<Long> ids){
         iBuildingService.Delete(ids);
