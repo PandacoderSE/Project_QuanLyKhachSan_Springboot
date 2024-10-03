@@ -61,8 +61,7 @@ public class BuildingConverter {
         bnew.setLevel(bet.getLevel());
         bnew.setRentPrice(bet.getRentprice());
         bnew.setRentPriceDescription(bet.getRentpricedescription());
-        bnew.setImageName(bet.getAvatar());
-        bnew.setImage(bet.getDecorationtime());
+        bnew.setImage(bet.getAvatar());
         // dùng hàm này nhanh vì nó là quan hệ 1 nhiều
         List<RentAreaEntity> rentareas = bet.getItems();
         bnew.setRentArea(rentareas.stream().map(it -> it.toString()).collect(Collectors.joining(",")));

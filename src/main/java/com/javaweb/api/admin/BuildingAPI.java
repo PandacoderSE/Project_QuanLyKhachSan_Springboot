@@ -6,6 +6,7 @@ import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
 import com.javaweb.service.IBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,6 @@ public class BuildingAPI {
         // xuống db để update
         return ResponseEntity.ok(iBuildingService.addOrUpdate(buildingDTO));
     }
-
-
     @DeleteMapping("/{ids}")
     public ResponseEntity<Void> DeleteBuilding(@PathVariable List<Long> ids){
         iBuildingService.Delete(ids);

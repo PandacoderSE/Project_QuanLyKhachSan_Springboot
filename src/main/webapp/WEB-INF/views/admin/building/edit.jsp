@@ -202,7 +202,7 @@
                         <div class="form-group">
                             <label class="col-xs-3 title_text">Hình Đại Diện</label>
                             <div class="col-xs-9">
-                                <form:input path="image" class="form-control"/>
+                                <form:input  path="image" class="form-control" id="imageInput" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -231,7 +231,7 @@
 
 <%-- sử lý js --%>
 <script>
-    // sử dụng JS lấy data
+    <%--// sử dụng JS lấy data--%>
     $('#btnAddOrUpdateBuilding').click(function() {
         var data = {};
         var typecode = [];
@@ -286,6 +286,68 @@
     $('#btnHuy').click(function (){
         window.location.href = "/admin/building-list" ;
     })
+    // khi truyền ảnh xuống
+    <%--$('#btnAddOrUpdateBuilding').click(function() {--%>
+    <%--    var form = $('#form_edit')[0];--%>
+    <%--    var formData = new FormData(form);--%>
+
+    <%--    var typecode = [];--%>
+    <%--    var formSerializedData = $('#form_edit').serializeArray(); // Dữ liệu form đã được serialize--%>
+
+    <%--    // Tạo một đối tượng JSON để lưu trữ dữ liệu--%>
+    <%--    var jsonData = {};--%>
+
+    <%--    // Xử lý dữ liệu serialize và thêm vào jsonData--%>
+    <%--    $.each(formSerializedData, function (i, v) {--%>
+    <%--        if (v.name != 'typeCode') {--%>
+    <%--            jsonData[v.name] = v.value; // Thêm dữ liệu thông thường vào jsonData--%>
+    <%--        } else {--%>
+    <%--            typecode.push(v.value);--%>
+    <%--        }--%>
+    <%--    });--%>
+
+    <%--    // Thêm mảng typecode vào jsonData--%>
+    <%--    jsonData['typeCode'] = typecode;--%>
+
+    <%--    // Lấy file ảnh từ input file--%>
+    <%--    var imageFile = $('#imageInput')[0].files[0]; // Lấy file ảnh đầu tiên--%>
+    <%--    if (imageFile) {--%>
+    <%--        jsonData['imageName'] = imageFile.name; // Lưu tên file vào jsonData--%>
+    <%--    }--%>
+
+    <%--    // Kiểm tra typecode có rỗng không--%>
+    <%--    if (typecode.length > 0) {--%>
+    <%--        // Gọi hàm addOrUpdateBuilding, truyền jsonData--%>
+    <%--        addOrUpdateBuilding(jsonData);--%>
+    <%--    } else {--%>
+    <%--        window.location.href = "<c:url value='/admin/building-edit?typeCode=require' />";--%>
+    <%--    }--%>
+    <%--});--%>
+    <%--function addOrUpdateBuilding(jsonData) {--%>
+    <%--    $.ajax({--%>
+    <%--        type: "POST",--%>
+    <%--        url: "/api/building",--%>
+    <%--        data: JSON.stringify(jsonData), // Chuyển đổi jsonData thành chuỗi JSON--%>
+    <%--        contentType: "application/json", // Thiết lập content type cho JSON--%>
+    <%--        dataType: "JSON", // Định dạng dữ liệu trả về là JSON--%>
+    <%--        success: function (respond, status, xhr) {--%>
+    <%--            if (xhr.status === 200 || xhr.status === 204) {--%>
+    <%--                console.log("Delete successful");--%>
+    <%--                swal({--%>
+    <%--                    title: "Thành Công",--%>
+    <%--                    icon: "success",--%>
+    <%--                    text: "Bạn Đã Thêm Hoặc Cập Nhật Thành Công",--%>
+    <%--                    confirmButtonText: "OK",--%>
+    <%--                    confirmButtonClass: "btn btn-success"--%>
+    <%--                });--%>
+    <%--            }--%>
+    <%--        },--%>
+    <%--        error: function (respond) {--%>
+    <%--            console.log(respond);--%>
+    <%--        },--%>
+    <%--    });--%>
+    <%--}--%>
+
 </script>
 </body>
 </html>

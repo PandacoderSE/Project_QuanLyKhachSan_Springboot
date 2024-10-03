@@ -103,7 +103,7 @@ public class BuildingService implements IBuildingService {
             bnew.setManagerphonenumber(dto.getManagerPhone());
             bnew.setRentprice(dto.getRentPrice());
             bnew.setRentpricedescription(dto.getRentPriceDescription());
-            bnew.setAvatar(dto.getImageName());
+            bnew.setAvatar(dto.getImage());
             // Xử lý lại khi dùng cascade
             bnew.getItems().clear();
             bnew.getItems().addAll(iRentAreaService.listRentArea(dto.getRentArea(),bnew));
@@ -123,7 +123,7 @@ public class BuildingService implements IBuildingService {
             bnew.setManagerphonenumber(dto.getManagerPhone());
             bnew.setRentprice(dto.getRentPrice());
             bnew.setRentpricedescription(dto.getRentPriceDescription());
-            bnew.setAvatar(dto.getImageName());
+            bnew.setAvatar(dto.getImage());
             bnew.setItems(iRentAreaService.listRentArea(dto.getRentArea(),bnew));
             buildingRepository.save(bnew) ;
         }
