@@ -8,6 +8,7 @@ import com.javaweb.enums.districtCode;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
+import com.javaweb.security.utils.SecurityUtils;
 import com.javaweb.service.IBuildingService;
 import com.javaweb.service.IUserService;
 import com.javaweb.utils.BuildingType;
@@ -34,6 +35,10 @@ public class BuildingController {
         // đẩy ra view theo đường dẫn file
         ModelAndView mav = new ModelAndView("admin/building/list") ;
         // đẩy data lại ô tìm kiếm , dùng mva để quang ra view
+        if(SecurityUtils.getAuthorities().contains("ROLE_STAFF")){
+            Long staffId = SecurityUtils.getPrincipal().getId();
+            params.put("staffId", staffId) ;
+        }
         BuildingSearchResponse bsrep = new BuildingSearchResponse() ;
         DisplayTagUtils.of(request, bsrep);
         List<BuildingSearchResponse> reList = buildingService.findAll(params,typeCode, PageRequest.of(bsrep.getPage() - 1, bsrep.getMaxPageItems())) ;

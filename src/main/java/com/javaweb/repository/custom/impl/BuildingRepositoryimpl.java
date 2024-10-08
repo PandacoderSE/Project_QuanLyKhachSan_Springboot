@@ -23,8 +23,8 @@ public class BuildingRepositoryimpl implements BuildingRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager ;
     public static void joinTable(Map<String,Object> params,List<String> typecode, StringBuilder sql) {
-        String saffid = (String) params.get("staffId");
-        if (StringUtils.check(saffid)) {
+        String staffid =  String.valueOf(params.get("staffId"));
+        if (StringUtils.check(staffid)) {
             sql.append(" INNER JOIN  assignmentbuilding ON building.id = assignmentbuilding.buildingid ");
         }
 
@@ -48,7 +48,7 @@ public class BuildingRepositoryimpl implements BuildingRepositoryCustom {
     // truy vấn phức tạp
     public static void querySpecial(Map<String,Object> params,List<String> typecode,StringBuilder where) {
         //staffid
-        String staffid = (String) params.get("staffId");
+        String staffid =  String.valueOf(params.get("staffId"));
         if (StringUtils.check(staffid)) {
             where.append(" AND  assignmentbuilding.staffid = " + staffid);
         }

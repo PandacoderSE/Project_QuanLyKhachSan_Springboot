@@ -144,13 +144,15 @@
                                                             <form:input path="managerPhone" class="form-control"/>
                                                         </div>
                                                         <div class="col-xs-2">
-                                                            <label class="name">Chọn nhân viên phụ trách</label>
-                                                            <form:select path="staffId" class="form-control">
-                                                                <form:option value="">---Chọn nhân viên---</form:option>
-                                                                <c:forEach items="${listStaffs}" var="it">
-                                                                    <form:option value="${it.key}" >${it.value}</form:option>
-                                                                </c:forEach>
-                                                            </form:select>
+                                                            <security:authorize access="hasRole('MANAGER')">
+                                                                <label class="name">Chọn nhân viên phụ trách</label>
+                                                                <form:select path="staffId" class="form-control">
+                                                                    <form:option value="">---Chọn nhân viên---</form:option>
+                                                                    <c:forEach items="${listStaffs}" var="it">
+                                                                        <form:option value="${it.key}" >${it.value}</form:option>
+                                                                    </c:forEach>
+                                                                </form:select>
+                                                            </security:authorize>
                                                         </div>
                                                         <div class="col-xs-5">
                                                             <form:checkboxes path="typeCode" items="${listTypes}" cssStyle="margin: 20px 0px 10px 10px"/>
@@ -212,17 +214,23 @@
                                 <display:column headerClass="col-actions" title="Thao tác">
                                     <div class="hidden-xs hidden-xs btn-group" bis_skin_checked="1">
                                         <!-- Nút giao tòa nhà -->
-                                        <button class="btn btn-xs btn-success" title="giao tòa nhà" onclick="assingmentBuilding(${tableList.id})">
-                                            <i class="fa-solid fa-building-user bigger-120"></i>
-                                        </button>
+                                        <security:authorize access="hasRole('MANAGER')">
+                                            <button class="btn btn-xs btn-success" title="giao tòa nhà" onclick="assingmentBuilding(${tableList.id})">
+                                                <i class="fa-solid fa-building-user bigger-120"></i>
+                                            </button>
+                                        </security:authorize>
+
                                         <!-- Nút chỉnh sửa tòa nhà -->
                                         <a class="btn btn-xs btn-info" href="/admin/building-edit-${tableList.id}" title="sửa tòa nhà">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </a>
                                         <!-- Nút xóa tòa nhà -->
-                                        <button class="btn btn-xs btn-danger" title="xóa tòa nhà" onclick="deleteBuilding(${tableList.id})">
-                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                        </button>
+                                        <security:authorize access="hasRole('MANAGER')">
+                                            <button class="btn btn-xs btn-danger" title="xóa tòa nhà" onclick="deleteBuilding(${tableList.id})">
+                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                            </button>
+                                        </security:authorize>
+
                                     </div>
                                 </display:column>
                             </display:table>
