@@ -24,7 +24,7 @@ public class BuildingRepositoryimpl implements BuildingRepositoryCustom {
     private EntityManager entityManager ;
     public static void joinTable(Map<String,Object> params,List<String> typecode, StringBuilder sql) {
         String staffid =  String.valueOf(params.get("staffId"));
-        if (StringUtils.check(staffid)) {
+        if (StringUtils.check(staffid) ) {
             sql.append(" INNER JOIN  assignmentbuilding ON building.id = assignmentbuilding.buildingid ");
         }
 

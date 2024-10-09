@@ -39,6 +39,11 @@ public class UserEntity extends BaseEntity {
     @ManyToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
     private List<BuildingEntity> buildings = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "assignmentcustomer",
+            joinColumns = @JoinColumn(name = "staffid", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "customerid", nullable = false))
+    private List<CustomerEntity> customerEntities = new ArrayList<>();
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -110,4 +115,11 @@ public class UserEntity extends BaseEntity {
         this.buildings = buildings;
     }
 
+    public List<CustomerEntity> getCustomerEntities() {
+        return customerEntities;
+    }
+
+    public void setCustomerEntities(List<CustomerEntity> customerEntities) {
+        this.customerEntities = customerEntities;
+    }
 }

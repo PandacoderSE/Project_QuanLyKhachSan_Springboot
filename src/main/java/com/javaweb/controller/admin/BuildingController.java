@@ -38,6 +38,8 @@ public class BuildingController {
         if(SecurityUtils.getAuthorities().contains("ROLE_STAFF")){
             Long staffId = SecurityUtils.getPrincipal().getId();
             params.put("staffId", staffId) ;
+        }else{
+            params.put("staffId","") ;
         }
         BuildingSearchResponse bsrep = new BuildingSearchResponse() ;
         DisplayTagUtils.of(request, bsrep);
