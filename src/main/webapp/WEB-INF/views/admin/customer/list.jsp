@@ -61,11 +61,11 @@
                       <div class="col-xs-12">
                         <div class="col-xs-4">
                           <label class="name">Tên Khách Hàng</label>
-                          <form:input path="name" class="form-control"/>
+                          <form:input path="fullname" class="form-control"/>
                         </div>
                         <div class="col-xs-4">
                           <label class="name">Di Động</label>
-                          <form:input path="customerPhone" class="form-control"/>
+                          <form:input path="phone" class="form-control"/>
                         </div>
                         <div class="col-xs-4">
                           <label class="name">Email</label>
@@ -128,20 +128,21 @@
             </thead>
 
             <tbody>
+          <c:forEach var="item" items="${listCustomer}">
             <tr>
               <td class="center">
                 <label class="pos-rel">
-                  <input type="checkbox" class="ace">
+                  <input type="checkbox" class="ace" value="${item.id}">
                   <span class="lbl"></span>
                 </label>
               </td>
-              <th>Nguyễn Văn Mạnh</th>
-              <th>0852608689</th>
-              <th>nguyenvanmanh@gmail.com</th>
-              <th>gọi điện tư vấn</th>
-              <th>VanManh</th>
-              <th>22/08/2003</th>
-              <th>Đang xử lý</th>
+                  <td>${item.fullname}</td>
+                  <td>${item.phone}</td>
+                  <td>${item.email}</td>
+                  <td>${item.demand}</td>
+                  <td>${item.createdBy}</td>
+                  <td>${item.createdDate}</td>
+                  <td>${item.status}</td>
               <td>
                 <div class="hidden-sm hidden-xs btn-group" bis_skin_checked="1">
                   <button class="btn btn-xs btn-success" title="Giao khách hàng" onclick="assingmentBuilding(1)">
@@ -160,6 +161,7 @@
 
               </td>
             </tr>
+          </c:forEach>
             </tbody>
           </table>
         </div><!-- /.span -->
