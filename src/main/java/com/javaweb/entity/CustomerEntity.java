@@ -28,6 +28,9 @@ public class CustomerEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "customerid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
     private List<UserEntity> userEntitys = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customerEntity",fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private List<TransactionEntity> transactionEntities = new ArrayList<>() ;
     public Long getId() {
         return id;
     }
@@ -91,5 +94,13 @@ public class CustomerEntity extends BaseEntity {
 
     public void setUserEntitys(List<UserEntity> userEntitys) {
         this.userEntitys = userEntitys;
+    }
+
+    public List<TransactionEntity> getTransactionEntities() {
+        return transactionEntities;
+    }
+
+    public void setTransactionEntities(List<TransactionEntity> transactionEntities) {
+        this.transactionEntities = transactionEntities;
     }
 }

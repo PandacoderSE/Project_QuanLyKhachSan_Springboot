@@ -1,10 +1,14 @@
 package com.javaweb.controller.admin;
 
 import com.javaweb.converter.CustomerConverter;
+import com.javaweb.entity.TransactionEntity;
+import com.javaweb.enums.TransactionType;
 import com.javaweb.enums.districtCode;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.dto.CustomerDTO;
 import com.javaweb.repository.CustomerRepository;
+import com.javaweb.repository.TransactionRepository;
+import com.javaweb.repository.custom.TransactionRepositoryCustom;
 import com.javaweb.service.ICustomerService;
 import com.javaweb.service.IUserService;
 import com.javaweb.utils.BuildingType;
@@ -29,6 +33,8 @@ public class CustomerController {
     private CustomerConverter customerConverter ;
     @Autowired
     private CustomerRepository customerRepository ;
+    @Autowired
+    private TransactionRepositoryCustom transactionRepositoryCustom ;
     @RequestMapping(value = "/admin/customer-list", method = RequestMethod.GET)
     public ModelAndView getCustomer(@ModelAttribute CustomerDTO customerDTO , @RequestParam Map<String ,Object> params, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("admin/customer/list") ;
@@ -55,6 +61,10 @@ public class CustomerController {
         CustomerDTO dto = customerConverter.toCustomerDTO(customerRepository.findById(Id).get()) ;
         ModelAndView mav = new ModelAndView("admin/customer/edit") ;
         mav.addObject("modalAdd" , dto) ;
+        mav.addObject("TransactionType", TransactionType.transactionType()) ;
+
+        List<TransactionEntity> listTranByCusID = transactionRepositoryCustom.findbyCustomerId(Id) ;
+        mav.addObject("listTranById",listTranByCusID ) ;
         return mav ;
     }
 }

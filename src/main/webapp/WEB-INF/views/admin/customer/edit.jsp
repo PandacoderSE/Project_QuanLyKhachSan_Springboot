@@ -91,79 +91,46 @@
                 </div>
             </div>
         </div>
-        <div class="page-header">
-            <h1 style="font-weight: bold; margin:0px 0px 15px 10px">
-                Chăm sóc khách hàng
-            </h1>
-            <hr style="font-weight: bold;">
-            <button class="btn btn-lg btn-success" style=" margin-left: 10px ; margin-bottom: 10px">
-                <i class="fa-solid fa-cart-plus"></i>
-                Add
-            </button>
-            <div class="col-xs-12" bis_skin_checked="1">
-                <table id="simple-table" class="table table-striped table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>Ngày Tạo</th>
-                        <th>Người Tạo</th>
-                        <th>Chi tiết giao dịch</th>
-                        <th>Thao Tác</th>
-                    </tr>
-                    </thead>
+    <c:if test="${not empty TransactionType}">
+        <c:forEach items="${TransactionType}" var="item">
+            <div class="page-header">
+                <h1 style="font-weight: bold; margin:0px 0px 15px 10px">${item.value}</h1>
+                <hr style="font-weight: bold;">
+                <button class="btn btn-lg btn-success" style=" margin-left: 10px ; margin-bottom: 10px">
+                    <i class="fa-solid fa-cart-plus"></i>
+                    Add
+                </button>
+                <div class="col-xs-12" bis_skin_checked="1">
+                    <table id="simple-table" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Ngày Tạo</th>
+                            <th>Người Tạo</th>
+                            <th>Chi tiết giao dịch</th>
+                            <th>Thao Tác</th>
+                        </tr>
+                        </thead>
 
-                    <tbody>
-                    <tr>
-                        <td>22/08/2003</td>
-                        <td>Nguyễn Văn Mạnh</td>
-                        <td>gọi điện tư vấn</td>
-                        <td>
-                            <button class="btn btn-xs btn-danger">
-                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                            </button>
+                        <tbody>
+                        <c:forEach items="${listTranById}" var="itemList">
+                            <c:if test="${item.key == itemList.code}">
+                                <td>${itemList.createdDate}</td>
+                                <td>${itemList.createdBy}</td>
+                                <td>${itemList.note}</td>
+                                <td>
+                                    <button class="btn btn-xs btn-danger">
+                                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                    </button>
 
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            </c:if>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div class="page-header">
-            <h1 style="font-weight: bold; margin:0px 0px 15px 10px">
-                Chăm sóc khách hàng
-            </h1>
-            <hr style="font-weight: bold;">
-            <button class="btn btn-lg btn-success" style=" margin-left: 10px ; margin-bottom: 10px">
-                <i class="fa-solid fa-cart-plus"></i>
-                Add
-            </button>
-            <div class="col-xs-12" bis_skin_checked="1">
-                <table id="simple-table" class="table table-striped table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>Ngày Tạo</th>
-                        <th>Người Tạo</th>
-                        <th>Chi tiết giao dịch</th>
-                        <th>Thao Tác</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr>
-                        <td>22/08/2003</td>
-                        <td>Nguyễn Văn Mạnh</td>
-                        <td>gọi điện tư vấn</td>
-                        <td>
-                            <button class="btn btn-xs btn-danger">
-                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                            </button>
-
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+        </c:forEach>
+    </c:if>
 
 
         <!-- PAGE CONTENT ENDS -->
