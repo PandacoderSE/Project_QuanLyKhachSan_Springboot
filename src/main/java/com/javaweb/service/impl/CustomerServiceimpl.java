@@ -8,6 +8,7 @@ import com.javaweb.repository.CustomerRepository;
 import com.javaweb.repository.custom.CustomerRepositoryCustom;
 import com.javaweb.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class CustomerServiceimpl implements ICustomerService {
     @Autowired
     private CustomerConverter customerConverter ;
     @Override
-    public List<CustomerDTO> findAll(Map<String, Object> params) {
-        List< CustomerEntity> listE = customerRepositoryCustom.findAll(params) ;
+    public List<CustomerDTO> findAll(Map<String, Object> params, Pageable pageable) {
+        List< CustomerEntity> listE = customerRepositoryCustom.findAll(params, pageable) ;
         List<CustomerDTO> listResult = new ArrayList<>() ;
         for (CustomerEntity it :listE) {
             CustomerDTO dto = customerConverter.toCustomerDTO(it) ;
@@ -33,5 +34,10 @@ public class CustomerServiceimpl implements ICustomerService {
         }
 
         return listResult;
+    }
+
+    @Override
+    public int countTotalItems(Map<String, Object> params) {
+        return customerRepositoryCustom.countTotalItem(params);
     }
 }

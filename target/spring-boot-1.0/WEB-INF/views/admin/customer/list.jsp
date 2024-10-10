@@ -107,63 +107,104 @@
       <!-- Bảng danh sách -->
       <div class="row" style="margin-top: 70px;">
         <div class="col-xs-12" bis_skin_checked="1">
-          <table id="simple-table" class="table table-striped table-bordered table-hover">
-            <thead>
-            <tr>
-              <th class="center">
-                <label class="pos-rel">
-                  <input type="checkbox" class="ace">
-                  <span class="lbl"></span>
-                </label>
-              </th>
-              <th>Tên Khách Hàng</th>
-              <th>Di động</th>
-              <th>Email</th>
-              <th>Nhu Cầu</th>
-              <th>Người thêm</th>
-              <th>Ngày thêm</th>
-              <th>Tình trạng</th>
-              <th>Thao Tác</th>
-            </tr>
-            </thead>
+          <display:table name="model.listResult" cellspacing="0" cellpadding="0"
+                         requestURI="${customerListUrl}" partialList="true" sort="external"
+                         size="${model.totalItems}" defaultsort="2" defaultorder="ascending"
+                         id="tableList" pagesize="${model.maxPageItems}"
+                         export="false"
+                         class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
+                         style="margin: 3em 0 1.5em;">
+            <display:column title="<fieldset class='form-group'>
+                         <input type='checkbox' id='checkAll' class='check-box-element'>
+                          </fieldset>" class="center select-cell"
+                            headerClass="center select-cell">
+              <fieldset>
+                <input type="checkbox" name="checkList" value="${tableList.id}"
+                       id="checkbox_${tableList.id}" class="check-box-element"/>
+              </fieldset>
+            </display:column>
+            <display:column headerClass="text-left" property="fullname" title="Tên Khách Hàng"/>
+            <display:column headerClass="text-left" property="phone" title="Số điện thoại"/>
+            <display:column headerClass="text-left" property="email" title="Email"/>
+            <display:column headerClass="text-left" property="demand" title="Nhu Cầu"/>
+            <display:column headerClass="text-left" property="createdBy" title="Người tạo"/>
+            <display:column headerClass="text-left" property="createdDate" title="Ngày tạo"/>
+            <display:column headerClass="text-left" property="status" title="Tình trạng"/>
+            <display:column headerClass="col-actions" title="Thao tác">
+              <div class="hidden-xs hidden-xs btn-group" bis_skin_checked="1">
+                <!-- Nút giao tòa nhà -->
+                <button class="btn btn-xs btn-success" title="Giao khách hàng" onclick="assingmentBuilding(1)">
 
-            <tbody>
-          <c:forEach var="item" items="${listCustomer}">
-            <tr>
-              <td class="center">
-                <label class="pos-rel">
-                  <input type="checkbox" class="ace" value="${item.id}">
-                  <span class="lbl"></span>
-                </label>
-              </td>
-                  <td>${item.fullname}</td>
-                  <td>${item.phone}</td>
-                  <td>${item.email}</td>
-                  <td>${item.demand}</td>
-                  <td>${item.createdBy}</td>
-                  <td>${item.createdDate}</td>
-                  <td>${item.status}</td>
-              <td>
-                <div class="hidden-sm hidden-xs btn-group" bis_skin_checked="1">
-                  <button class="btn btn-xs btn-success" title="Giao khách hàng" onclick="assingmentBuilding(1)">
-
-                    <i class="fa-solid fa-person-circle-check bigger-120"></i>
-                  </button>
-                  <a href="/admin/customer-edit"><button class="btn btn-xs btn-info">
-                    <i class="ace-icon fa fa-pencil bigger-120"></i>
-                  </button></a>
+                  <i class="fa-solid fa-person-circle-check bigger-120"></i>
+                </button>
+                <a href="/admin/customer-edit"><button class="btn btn-xs btn-info">
+                  <i class="ace-icon fa fa-pencil bigger-120"></i>
+                </button></a>
 
 
-                  <button class="btn btn-xs btn-danger">
-                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                  </button>
-                </div>
+                <button class="btn btn-xs btn-danger">
+                  <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                </button>
+              </div>
+            </display:column>
+          </display:table>
+<%--          <table id="simple-table" class="table table-striped table-bordered table-hover">--%>
+<%--            <thead>--%>
+<%--            <tr>--%>
+<%--              <th class="center">--%>
+<%--                <label class="pos-rel">--%>
+<%--                  <input type="checkbox" class="ace">--%>
+<%--                  <span class="lbl"></span>--%>
+<%--                </label>--%>
+<%--              </th>--%>
+<%--              <th>Tên Khách Hàng</th>--%>
+<%--              <th>Di động</th>--%>
+<%--              <th>Email</th>--%>
+<%--              <th>Nhu Cầu</th>--%>
+<%--              <th>Người thêm</th>--%>
+<%--              <th>Ngày thêm</th>--%>
+<%--              <th>Tình trạng</th>--%>
+<%--              <th>Thao Tác</th>--%>
+<%--            </tr>--%>
+<%--            </thead>--%>
 
-              </td>
-            </tr>
-          </c:forEach>
-            </tbody>
-          </table>
+<%--            <tbody>--%>
+<%--          <c:forEach var="item" items="${listCustomer}">--%>
+<%--            <tr>--%>
+<%--              <td class="center">--%>
+<%--                <label class="pos-rel">--%>
+<%--                  <input type="checkbox" class="ace" value="${item.id}">--%>
+<%--                  <span class="lbl"></span>--%>
+<%--                </label>--%>
+<%--              </td>--%>
+<%--                  <td>${item.fullname}</td>--%>
+<%--                  <td>${item.phone}</td>--%>
+<%--                  <td>${item.email}</td>--%>
+<%--                  <td>${item.demand}</td>--%>
+<%--                  <td>${item.createdBy}</td>--%>
+<%--                  <td>${item.createdDate}</td>--%>
+<%--                  <td>${item.status}</td>--%>
+<%--              <td>--%>
+<%--                <div class="hidden-sm hidden-xs btn-group" bis_skin_checked="1">--%>
+<%--                  <button class="btn btn-xs btn-success" title="Giao khách hàng" onclick="assingmentBuilding(1)">--%>
+
+<%--                    <i class="fa-solid fa-person-circle-check bigger-120"></i>--%>
+<%--                  </button>--%>
+<%--                  <a href="/admin/customer-edit"><button class="btn btn-xs btn-info">--%>
+<%--                    <i class="ace-icon fa fa-pencil bigger-120"></i>--%>
+<%--                  </button></a>--%>
+
+
+<%--                  <button class="btn btn-xs btn-danger">--%>
+<%--                    <i class="ace-icon fa fa-trash-o bigger-120"></i>--%>
+<%--                  </button>--%>
+<%--                </div>--%>
+
+<%--              </td>--%>
+<%--            </tr>--%>
+<%--          </c:forEach>--%>
+<%--            </tbody>--%>
+<%--          </table>--%>
         </div><!-- /.span -->
       </div>
       <!-- end Bảng danh sách -->

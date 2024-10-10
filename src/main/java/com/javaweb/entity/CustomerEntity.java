@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "customer")
-public class CustomerEntity {
+public class CustomerEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +21,8 @@ public class CustomerEntity {
     private String companyname ;
     @Column(name = "status")
     private String status ;
-
+    @Column(name = "demand")
+    private String demand ;
     @ManyToMany(mappedBy = "customerEntities", fetch = FetchType.LAZY)
     private List<UserEntity> users = new ArrayList<>();
 
@@ -79,5 +80,13 @@ public class CustomerEntity {
 
     public void setUsers(List<UserEntity> users) {
         this.users = users;
+    }
+
+    public String getDemand() {
+        return demand;
+    }
+
+    public void setDemand(String demand) {
+        this.demand = demand;
     }
 }
