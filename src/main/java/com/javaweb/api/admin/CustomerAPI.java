@@ -1,13 +1,12 @@
 package com.javaweb.api.admin;
 
+import com.javaweb.model.dto.AssignmentCustomerDTO;
+import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +22,17 @@ public class CustomerAPI {
             customerService.deleteCustomers(ids);
         }
         return ResponseEntity.noContent().build();
+    }
+    // hàm lòa nhân viên đc giao
+    @GetMapping("/{id}/staffs")
+    public ResponseDTO loadStaffofCustomer(@PathVariable Long id){
+        ResponseDTO result = customerService .listStaffs(id) ;
+        return result ;
+    }
+    @PostMapping("/assignment")
+    public ResponseEntity<Void> updateAssimentCustomer(@RequestBody AssignmentCustomerDTO assignmentCustomerDTO){
+        System.out.println("oke");
+        customerService.updateAssignmentCustomer(assignmentCustomerDTO);
+        return ResponseEntity.noContent().build()  ;
     }
 }

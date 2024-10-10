@@ -133,7 +133,7 @@
             <display:column headerClass="col-actions" title="Thao tác">
               <div class="hidden-xs hidden-xs btn-group" bis_skin_checked="1">
                 <!-- Nút giao tòa nhà -->
-                <button class="btn btn-xs btn-success" title="Giao khách hàng" onclick="assingmentBuilding(1)">
+                <button class="btn btn-xs btn-success" title="Giao khách hàng" onclick="assingmentCustomer(${tableList.id})">
                   <i class="fa-solid fa-person-circle-check bigger-120"></i>
                 </button>
                 <a href="/admin/customer-edit" class="btn btn-xs btn-info">
@@ -156,7 +156,7 @@
     <!-- PAGE CONTENT ENDS -->
   </div><!-- /.page-content -->
 </div>
-<div class="modal fade" id="assingmentBuildingModal" role="dialog">
+<div class="modal fade" id="assingmentCustomerModal" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -173,46 +173,19 @@
           </tr>
           </thead>
           <tbody class="table-group-divider">
-          <tr>
-            <td><input type="checkbox" class="ace" id="checkbox_1" value="1">
-              <span class="lbl"></span></td>
-            <td>Nguyễn Văn A</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" class="ace" id="checkbox_2" value="2">
-              <span class="lbl"></span></td>
-            <td>Trần Văn C</td>
-          </tr>
+
           </tbody>
         </table>
-        <input type="hidden" id="buildingId" value="1">
+        <input type="hidden" id="customerId">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="btnAssingmentBuilding">Giao Tòa Nhà</button>
+        <button type="button" class="btn btn-primary" id="btnAssingmentCustomer">Giao Khách Hàng</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
       </div>
     </div>
   </div>
 </div>
-<script>
-  function assingmentBuilding(buildingId) {
-    $('#assingmentBuildingModal').modal();
-  }
-  $('#btnAssingmentBuilding').click(function (e) {
-    e.preventDefault();
-    var data = {};
-    data['buildingid'] = $('#buildingId').val();
-    // tìm cái nào checkboxx là checked thì sẽ lấy value
-    var staffs = $('#staffList').find('tbody input[type=checkbox]:checked').map(function () {
-      return $(this).val();
-    }).get();
 
-    data['staffs'] = staffs;
-    console.log("ok");
-
-
-  })
-</script>
 <!-- Tìm kiếm js  -->
 <script>
   $('#btnSearchCustomer').click(function (e) {
@@ -293,6 +266,80 @@
       error :function(respond){
         console.log(respond) ;
 
+      },
+    })
+  }
+// Xây dựng hàm load nhân viên và giao nhân viên ở đây
+  function  assingmentCustomer(customerid){
+    $('#assingmentCustomerModal').modal() ;
+    loadStaff(customerid) ;
+    $('#customerId').val(customerid);
+  }
+  function loadStaff(customerid){
+    $.ajax({
+      type: "Get",
+      url :"/api/customer/" + customerid +"/staffs",
+      data : JSON.stringify(customerid),
+      // client -> server thì dùng contenType định dạng
+      contentType :"application/json",
+      // server - > client thì dùng DataType định dạng
+      dataType :"JSON",
+      // nếu gét thì kế quả là respond và đem quăng ra view
+      success : function(response){
+        var row = '' ;
+        $.each(response.data , function (index, item){
+          row += '<tr>' ;
+          row += '<td><input type="checkbox" name="check1" value="' + item.staffId + '" ' + item.checked +'></td>' ;
+          row += '<td>' + item.fullName +'</td>' ;
+          row += '</tr>';
+        })
+        //cách gọi ra bảng theo các lớp
+        $('#staffList tbody').html(row) ;
+        console.log("Success") ;
+      },
+      error :function(response){
+        console.log(respondse) ;
+        window.location.href ="<c:url value="/admin/customer-list?message=errol" />" ;
+      },
+    })
+  }
+  // viết API giao khách hàng cho nhân viên quản lý
+  $('#btnAssingmentCustomer').click(function (e){
+        e.preventDefault();
+        var data = {};
+        data['customerId'] = $('#customerId').val();
+        // tìm cái nào checkboxx là checked thì sẽ lấy value
+        var staffs = $('#staffList').find('tbody input[type=checkbox]:checked').map(function () {
+          return $(this).val();
+        }).get();
+
+        data['staffs'] = staffs;
+        if(data['staffs'] !=''){
+          assignmentStaffCustomer(data) ;
+        }else{
+          swal("Thông báo", "Vui lòng chọn ít nhất một nhân vin để giao.", "warning");
+        }
+  }) ;
+  function assignmentStaffCustomer(data){
+    $.ajax({
+      type: "POST",
+      url :"/api/customer" + '/assignment',
+      data : JSON.stringify(data),
+      contentType :"application/json",
+      dataType :"JSON",
+      success : function(respond,status, xhr){
+        if (xhr.status === 200 || xhr.status === 204) {
+          swal({
+            title: "Giao Thành Công!",
+            text: "Các khách hàng đã được giao.",
+            icon: "success"
+          })
+        }
+
+      },
+      error :function(respond){
+        console.info("Giao ko thành cồng ")
+        console.log(respond) ;
       },
     })
   }

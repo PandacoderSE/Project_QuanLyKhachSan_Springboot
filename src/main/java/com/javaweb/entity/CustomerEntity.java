@@ -23,9 +23,11 @@ public class CustomerEntity extends BaseEntity {
     private String status ;
     @Column(name = "demand")
     private String demand ;
-    @ManyToMany(mappedBy = "customerEntities", fetch = FetchType.LAZY)
-    private List<UserEntity> users = new ArrayList<>();
-
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "assignmentcustomer",
+            joinColumns = @JoinColumn(name = "customerid", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
+    private List<UserEntity> userEntitys = new ArrayList<>();
     public Long getId() {
         return id;
     }
@@ -74,13 +76,6 @@ public class CustomerEntity extends BaseEntity {
         this.status = status;
     }
 
-    public List<UserEntity> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserEntity> users) {
-        this.users = users;
-    }
 
     public String getDemand() {
         return demand;
@@ -88,5 +83,13 @@ public class CustomerEntity extends BaseEntity {
 
     public void setDemand(String demand) {
         this.demand = demand;
+    }
+
+    public List<UserEntity> getUserEntitys() {
+        return userEntitys;
+    }
+
+    public void setUserEntitys(List<UserEntity> userEntitys) {
+        this.userEntitys = userEntitys;
     }
 }
