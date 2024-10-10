@@ -1,6 +1,7 @@
 package com.javaweb.api.admin;
 
 import com.javaweb.model.dto.AssignmentCustomerDTO;
+import com.javaweb.model.dto.CustomerDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,9 @@ public class CustomerAPI {
         System.out.println("oke");
         customerService.updateAssignmentCustomer(assignmentCustomerDTO);
         return ResponseEntity.noContent().build()  ;
+    }
+    @PostMapping
+    public ResponseEntity<CustomerDTO> addOrUpdateCustomer(@RequestBody CustomerDTO customerDTO){
+        return ResponseEntity.ok(customerService.insertOrUpdateCustomer(customerDTO)) ;
     }
 }

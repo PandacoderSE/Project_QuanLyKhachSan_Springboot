@@ -99,7 +99,7 @@
           </div>
         </div>
         <div class="button_them_xoa" style="text-align: right; margin-right: 13px;">
-          <button class="btn btn-info" ><i class="fa-solid fa-person-circle-plus bigger-120"></i></button>
+          <a href="/admin/customer-edit"><button class="btn btn-info" ><i class="fa-solid fa-person-circle-plus bigger-120"></i></button></a>
           <button class="btn btn-danger" id="btnDeleteCustomers" title="xóa khách hàng s"><i class="fa-solid fa-person-circle-minus bigger-120"></i></button>
         </div>
       </div>
@@ -136,7 +136,7 @@
                 <button class="btn btn-xs btn-success" title="Giao khách hàng" onclick="assingmentCustomer(${tableList.id})">
                   <i class="fa-solid fa-person-circle-check bigger-120"></i>
                 </button>
-                <a href="/admin/customer-edit" class="btn btn-xs btn-info">
+                <a href="/admin/customer-edit-${tableList.id}" class="btn btn-xs btn-info">
                   <i class="ace-icon fa fa-pencil bigger-120"></i>
                 </a>
                 <button class="btn btn-xs btn-danger" title="Xóa khách hàng" onclick="deleteCustomer(${tableList.id})">

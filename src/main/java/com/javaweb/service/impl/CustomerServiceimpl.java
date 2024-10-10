@@ -13,6 +13,7 @@ import com.javaweb.repository.CustomerRepository;
 import com.javaweb.repository.UserRepository;
 import com.javaweb.repository.custom.CustomerRepositoryCustom;
 import com.javaweb.service.ICustomerService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ public class CustomerServiceimpl implements ICustomerService {
     private CustomerConverter customerConverter ;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ModelMapper modelMapper ;
     @Override
     public List<CustomerDTO> findAll(Map<String, Object> params, Pageable pageable) {
         List< CustomerEntity> listE = customerRepositoryCustom.findAll(params, pageable) ;
@@ -42,6 +45,12 @@ public class CustomerServiceimpl implements ICustomerService {
         }
 
         return listResult;
+    }
+
+    @Override
+    public CustomerDTO insertOrUpdateCustomer(CustomerDTO customerDTO) {
+        CustomerEntity cusEntity = modelMapper.map(customerDTO,CustomerEntity.class) ;
+        return customerConverter.toCustomerDTO(customerRepository.save(cusEntity)) ;
     }
 
     @Override

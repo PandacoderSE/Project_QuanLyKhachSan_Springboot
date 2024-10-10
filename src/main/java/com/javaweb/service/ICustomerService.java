@@ -13,6 +13,7 @@ import java.util.Objects;
 
 public interface ICustomerService {
     List<CustomerDTO> findAll(Map<String, Object> params, Pageable pageable) ;
+    CustomerDTO insertOrUpdateCustomer( CustomerDTO customerDTO) ;
     int countTotalItems(Map<String, Object> params) ;
     void deleteCustomers(List<Long> ids) ;
     ResponseDTO listStaffs(long customerId) ;
