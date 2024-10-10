@@ -99,8 +99,8 @@
           </div>
         </div>
         <div class="button_them_xoa" style="text-align: right; margin-right: 13px;">
-          <button class="btn btn-info"><i class="fa-solid fa-person-circle-plus bigger-120"></i></button>
-          <button class="btn btn-danger"><i class="fa-solid fa-person-circle-minus bigger-120"></i></button>
+          <button class="btn btn-info" ><i class="fa-solid fa-person-circle-plus bigger-120"></i></button>
+          <button class="btn btn-danger" id="btnDeleteCustomers" title="xóa khách hàng s"><i class="fa-solid fa-person-circle-minus bigger-120"></i></button>
         </div>
       </div>
       <!--end Tìm kiếm -->
@@ -134,77 +134,18 @@
               <div class="hidden-xs hidden-xs btn-group" bis_skin_checked="1">
                 <!-- Nút giao tòa nhà -->
                 <button class="btn btn-xs btn-success" title="Giao khách hàng" onclick="assingmentBuilding(1)">
-
                   <i class="fa-solid fa-person-circle-check bigger-120"></i>
                 </button>
-                <a href="/admin/customer-edit"><button class="btn btn-xs btn-info">
+                <a href="/admin/customer-edit" class="btn btn-xs btn-info">
                   <i class="ace-icon fa fa-pencil bigger-120"></i>
-                </button></a>
-
-
-                <button class="btn btn-xs btn-danger">
+                </a>
+                <button class="btn btn-xs btn-danger" title="Xóa khách hàng" onclick="deleteCustomer(${tableList.id})">
                   <i class="ace-icon fa fa-trash-o bigger-120"></i>
                 </button>
               </div>
             </display:column>
           </display:table>
-<%--          <table id="simple-table" class="table table-striped table-bordered table-hover">--%>
-<%--            <thead>--%>
-<%--            <tr>--%>
-<%--              <th class="center">--%>
-<%--                <label class="pos-rel">--%>
-<%--                  <input type="checkbox" class="ace">--%>
-<%--                  <span class="lbl"></span>--%>
-<%--                </label>--%>
-<%--              </th>--%>
-<%--              <th>Tên Khách Hàng</th>--%>
-<%--              <th>Di động</th>--%>
-<%--              <th>Email</th>--%>
-<%--              <th>Nhu Cầu</th>--%>
-<%--              <th>Người thêm</th>--%>
-<%--              <th>Ngày thêm</th>--%>
-<%--              <th>Tình trạng</th>--%>
-<%--              <th>Thao Tác</th>--%>
-<%--            </tr>--%>
-<%--            </thead>--%>
 
-<%--            <tbody>--%>
-<%--          <c:forEach var="item" items="${listCustomer}">--%>
-<%--            <tr>--%>
-<%--              <td class="center">--%>
-<%--                <label class="pos-rel">--%>
-<%--                  <input type="checkbox" class="ace" value="${item.id}">--%>
-<%--                  <span class="lbl"></span>--%>
-<%--                </label>--%>
-<%--              </td>--%>
-<%--                  <td>${item.fullname}</td>--%>
-<%--                  <td>${item.phone}</td>--%>
-<%--                  <td>${item.email}</td>--%>
-<%--                  <td>${item.demand}</td>--%>
-<%--                  <td>${item.createdBy}</td>--%>
-<%--                  <td>${item.createdDate}</td>--%>
-<%--                  <td>${item.status}</td>--%>
-<%--              <td>--%>
-<%--                <div class="hidden-sm hidden-xs btn-group" bis_skin_checked="1">--%>
-<%--                  <button class="btn btn-xs btn-success" title="Giao khách hàng" onclick="assingmentBuilding(1)">--%>
-
-<%--                    <i class="fa-solid fa-person-circle-check bigger-120"></i>--%>
-<%--                  </button>--%>
-<%--                  <a href="/admin/customer-edit"><button class="btn btn-xs btn-info">--%>
-<%--                    <i class="ace-icon fa fa-pencil bigger-120"></i>--%>
-<%--                  </button></a>--%>
-
-
-<%--                  <button class="btn btn-xs btn-danger">--%>
-<%--                    <i class="ace-icon fa fa-trash-o bigger-120"></i>--%>
-<%--                  </button>--%>
-<%--                </div>--%>
-
-<%--              </td>--%>
-<%--            </tr>--%>
-<%--          </c:forEach>--%>
-<%--            </tbody>--%>
-<%--          </table>--%>
         </div><!-- /.span -->
       </div>
       <!-- end Bảng danh sách -->
@@ -279,6 +220,82 @@
     console.log("ok") ;
     $('#listForm').submit();
   })
+</script>
+<%--Xây dựng hàm xóa --%>
+<script>
+  function deleteCustomer(Id){
+    swal({
+      title: "Xác nhận xóa",
+      text: "Bạn có chắc chắn xóa những dòng đã chọn",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xác nhận",
+      cancelButtonText: "Hủy bỏ",
+      confirmButtonClass: "btn btn-success",
+      cancelButtonClass: "btn btn-danger"
+    }).then(function (res) {
+      if(res.value){
+        deleteCustomers(Id) ;
+      }else if(res.dismiss == 'cancel'){
+        console.log('cancel');
+      }
+    });
+    //deleteBuildings(Id) ;
+  }
+  $('#btnDeleteCustomers').click(function (e) {
+    e.preventDefault();
+    // tìm cái nào checkboxx là checked thì sẽ lấy value
+    var customerids = $('#tableList').find('tbody input[type=checkbox]:checked').map(function () {
+      return $(this).val();
+    }).get();
+    if (customerids.length === 0) {
+      swal("Thông báo", "Vui lòng chọn ít nhất một khách hàng để xóa.", "warning");
+      return; // Nếu không có ID nào được chọn, dừng lại
+    }else{
+      swal({
+        title: "Xác nhận xóa",
+        text: "Bạn có chắc chắn xóa những dòng đã chọn",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Xác nhận",
+        cancelButtonText: "Hủy bỏ",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger"
+      }).then(function (res) {
+        if(res.value){
+          deleteCustomers(customerids);
+        }else if(res.dismiss == 'cancel'){
+          console.log('cancel');
+        }
+      });
+    }
+
+  })
+  // xây hàm ajax chung cho xóa hết và xóa 1 cái
+  function deleteCustomers(data){
+    $.ajax({
+      type: "DELETE",
+      url :"/api/customer/" + data,
+      data : JSON.stringify(data),
+      contentType :"application/json",
+      dataType :"JSON",
+      success : function(respond, status, xhr){
+        if (xhr.status === 200 || xhr.status === 204) {
+          swal({
+            title: "Xóa thành công!",
+            text: "Khách hàng đã được xóa.",
+            icon: "success"
+          }).then(() => {
+            window.location.href = "/admin/customer-list"; // Chuyển hướng
+          });
+        }
+      },
+      error :function(respond){
+        console.log(respond) ;
+
+      },
+    })
+  }
 </script>
 </body>
 </html>

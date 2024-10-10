@@ -40,4 +40,11 @@ public class CustomerServiceimpl implements ICustomerService {
     public int countTotalItems(Map<String, Object> params) {
         return customerRepositoryCustom.countTotalItem(params);
     }
+
+    @Override
+    public void deleteCustomers(List<Long> ids) {
+        for (Long id :ids) {
+            customerRepository.deleteById(id);
+        }
+    }
 }
