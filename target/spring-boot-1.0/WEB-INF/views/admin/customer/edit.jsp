@@ -22,6 +22,12 @@
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href="#">Home</a>
                 </li>
+                <c:if test="${empty modalAdd.id}">
+                    <li class="active">Thêm Khách hàng mới</li>
+                </c:if>
+                 <c:if test="${not empty modalAdd.id}">
+                     <li class="active">Sửa khách hàng</li>
+                 </c:if>
                 <li class="active">Thêm tòa nhà</li>
             </ul><!-- /.breadcrumb -->
         </div>
@@ -86,6 +92,7 @@
                                         style="margin-left: 15px; font-size: 23px;">Hủy Thao Tác</button>
                                 </div>
                                 </c:if>
+<%--                            Để gửi về kèm id nếu là sửa--%>
                             <form:hidden path="id" id="customerId"/>
                     </form:form>
                 </div>
@@ -96,7 +103,7 @@
             <div class="page-header">
                 <h1 style="font-weight: bold; margin:0px 0px 15px 10px">${item.value}</h1>
                 <hr style="font-weight: bold;">
-                <button class="btn btn-lg btn-success" style=" margin-left: 10px ; margin-bottom: 10px">
+                <button class="btn btn-lg btn-success" style=" margin-left: 10px ; margin-bottom: 10px" onclick="addTransaction('${item.key}','${modalAdd.id}')">
                     <i class="fa-solid fa-cart-plus"></i>
                     Add
                 </button>
@@ -114,15 +121,16 @@
                         <tbody>
                         <c:forEach items="${listTranById}" var="itemList">
                             <c:if test="${item.key == itemList.code}">
+                                <tr>
                                 <td>${itemList.createdDate}</td>
                                 <td>${itemList.createdBy}</td>
                                 <td>${itemList.note}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-danger">
+                                    <button class="btn btn-xs btn-danger" onclick="deleteTran('${itemList.id}')">
                                         <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                     </button>
 
-                                </td>
+                                </td></tr>
                             </c:if>
                         </c:forEach>
                         </tbody>
@@ -135,6 +143,34 @@
 
         <!-- PAGE CONTENT ENDS -->
     </div><!-- /.page-content -->
+</div>
+<div class="modal fade" id="TransactionCustomerModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Theo Giao Dịch Với Khách Hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" style="margin-top: -27px;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" style="text-align: center;"
+                       id="staffList">
+
+                    <tbody class="table-group-divider">
+                    <tr>
+                        <td style="text-align: center;">Chi Tiết Giao Dịch</td>
+                        <td style="text-align: center;"> <input type="text" id="note"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <input type="hidden" name="customerId" id="customerId">
+                <input type="hidden" name="code" id="code">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnaddTransaction">Thêm Giao Dịch</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
     $('#btnAddorUpdateCustomer').click(function (){
@@ -173,6 +209,67 @@
     $('#btnHuy').click(function (){
         window.location.href="/admin/customer-list" ;
     })
+    // Hàm thêm giao dịch
+    function addTransaction(code,customerId){
+        $('#TransactionCustomerModal').modal() ;
+        // gắn các giá trị cho biến ẩn
+        $('#customerId').val(customerId) ;
+        $('#code').val(code) ;
+    }
+    // Sử lý button thêm
+    $('#btnaddTransaction').click(function (e){
+        e.preventDefault();
+        var data = {};
+        data['customerid'] =$('#customerId').val() ;
+        data['code']=$('#code').val() ;
+        data['note']=$('#note').val() ;
+        console.log(data) ;
+        $.ajax({
+            type: "POST",
+            url :"/api/customer" +"/transactionof",
+            data:JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "JSON",
+            success :function (respond,status,xhr){
+                if(xhr.status === 200 || xhr.status === 204 ){
+                    swal({
+                        title: "Thông báo",
+                        icon :"success",
+                        text:"Thêm giao dịch thành công",
+                        confirmButtonText: "OK",
+                        confirmButtonClass: "btn btn-success"
+                    })
+                }
+            },
+            errors:function (respond){
+                console.log(respond) ;
+            }
+        })
+    })
+    function deleteTran(id){
+        $.ajax({
+            type: "DELETE",
+            url:"/api/customer" +"/transactionof/"+ id ,
+            data:JSON.stringify(id) ,
+            contentType:"application/json",
+            dataType:"JSON",
+            success:function (respond,status,xhr){
+                if(xhr.status === 200 ||xhr.status ===204){
+                    swal({
+                        title:"Thông Báo",
+                        icon:"success",
+                        text:"Xóa Thành Công",
+                        confirmButtonText: "OK",
+                        confirmButtonClass: "btn btn-success",
+                    })
+
+                }
+            },
+            errors:function (respond){
+                console.log(respond) ;
+            }
+        })
+    }
 </script>
 </body>
 </html>

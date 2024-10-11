@@ -2,8 +2,10 @@ package com.javaweb.api.admin;
 
 import com.javaweb.model.dto.AssignmentCustomerDTO;
 import com.javaweb.model.dto.CustomerDTO;
+import com.javaweb.model.dto.TransactionDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.service.ICustomerService;
+import com.javaweb.service.ITransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import java.util.List;
 public class CustomerAPI {
     @Autowired
     private ICustomerService customerService ;
+    @Autowired
+    private ITransactionService transactionService ;
     // api xóa
     @DeleteMapping("/{ids}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable List<Long> ids){
@@ -39,5 +43,14 @@ public class CustomerAPI {
     @PostMapping
     public ResponseEntity<CustomerDTO> addOrUpdateCustomer(@RequestBody CustomerDTO customerDTO){
         return ResponseEntity.ok(customerService.insertOrUpdateCustomer(customerDTO)) ;
+    }
+    @PostMapping("/transactionof")
+    public ResponseEntity<TransactionDTO> addTransactionCustomer(@RequestBody TransactionDTO transactionDTO){
+        return  ResponseEntity.ok(transactionService.insertTran(transactionDTO)) ;
+    }
+    @DeleteMapping ("/transactionof/{id}")
+    public ResponseEntity<Void> deleteTransactionCustomer(@PathVariable Long id){
+        transactionService.delete(id) ;
+        return  ResponseEntity.noContent().build() ;
     }
 }

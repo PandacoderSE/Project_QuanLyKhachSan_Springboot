@@ -273,6 +273,7 @@
   function  assingmentCustomer(customerid){
     $('#assingmentCustomerModal').modal() ;
     loadStaff(customerid) ;
+    // gắn biến để khi gửi về có customerid
     $('#customerId').val(customerid);
   }
   function loadStaff(customerid){
