@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liên hệ</title>
+    <link rel="stylesheet" href="assets/sweetalert2/sweetalert2.min.css">
 </head>
 <body>
 <div class="page-wrapper">
@@ -116,18 +117,18 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <h2 class="title-lienhe"><strong>Liên hệ với chúng tôi</strong></h2>
-                    <form>
+                    <form >
                         <div class="row">
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Họ và tên">
+                                <input type="text" class="form-control" placeholder="Họ và tên" id="fullname">
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Email">
+                                <input type="text" class="form-control" placeholder="Email" id="email">
                             </div>
                         </div>
-                        <input type="text" class="form-control mt-3" placeholder="Số điện thoại">
-                        <input type="text" class="form-control mt-3" placeholder="Nội dung">
-                        <button class="btn btn-primary px-4 mt-3">
+                        <input type="text" class="form-control mt-3" placeholder="Số điện thoại" id="phonenumber">
+                        <input type="text" class="form-control mt-3" placeholder="Nội dung" id="demand">
+                        <button class="btn btn-primary px-4 mt-3" id="addContact">
                             Gửi liên hệ
                         </button>
                     </form>
@@ -233,6 +234,42 @@
         </div>
     </footer>
 </div>
+<script src="web/vendor/jquery/jquery.min.js"></script>
+<script src="web/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type='text/javascript' src="assets/sweetalert2/sweetalert2.min.js"></script>
+<script>
+    $('#addContact').click(function(e){
+        e.preventDefault();
+        var data={} ;
+        data['fullname'] = $('#fullname').val() ;
+        data['phone']=$('#phonenumber').val() ;
+        data['demand']=$('#demand').val() ;
+        data['email']=$('#email').val() ;
+        if(data['fullname'].trim() !== "" && data['phone'].trim() !== ""){
+           addcontact(data) ;
+        }else{
+            alert("Bạn phải nhập tên và sô điện thoại để có thể liên hệ") ;
+        }
+
+    })
+    function addcontact(data){
+        $.ajax({
+            type:"POST",
+            url :"/api/contact",
+            data:JSON.stringify(data),
+            contentType:"application/json",
+            dataType:"JSON",
+            success:function(respond,status,xhr){
+                if(xhr.status === 200 || xhr.status === 204){
+                    alert("Bạn vừa thêm thành công 1 liên hệ") ;
+                }
+            },
+            errors:function (respond) {
+              console.log(respond) ;
+            }
+        })
+    }
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </body>

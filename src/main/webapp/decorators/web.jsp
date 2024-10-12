@@ -12,6 +12,7 @@
 
 	<!-- Custom styles for this template -->
 	<link href="web/css/small-business.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="assets/sweetalert2/sweetalert2.min.css">
 </head>
 <body>
 	<!-- Navigation -->
