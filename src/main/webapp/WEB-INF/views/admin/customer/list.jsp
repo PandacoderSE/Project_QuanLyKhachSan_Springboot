@@ -76,6 +76,7 @@
                     <div class="form-group">
                       <div class="col-xs-12">
                         <div class="col-xs-4" style="margin-bottom: 15px;">
+                          <security:authorize access="hasRole('MANAGER')">
                           <label class="name">Chọn nhân viên phụ trách</label>
                           <form:select path="managementStaff" class="form-control">
                                 <form:option value="">---Chọn nhân viên---</form:option>
@@ -83,6 +84,7 @@
                                     <form:option value="${it.key}" >${it.value}</form:option>
                                   </c:forEach>
                           </form:select>
+                          </security:authorize>
                         </div>
                         <div class="col-xs-12">
                           <button class="btn btn-danger" id="btnSearchCustomer">
@@ -99,8 +101,10 @@
           </div>
         </div>
         <div class="button_them_xoa" style="text-align: right; margin-right: 13px;">
+          <security:authorize access="hasRole('MANAGER')">
           <a href="/admin/customer-edit"><button class="btn btn-info" ><i class="fa-solid fa-person-circle-plus bigger-120"></i></button></a>
           <button class="btn btn-danger" id="btnDeleteCustomers" title="xóa khách hàng s"><i class="fa-solid fa-person-circle-minus bigger-120"></i></button>
+            </security:authorize>
         </div>
       </div>
       <!--end Tìm kiếm -->
@@ -133,15 +137,19 @@
             <display:column headerClass="col-actions" title="Thao tác">
               <div class="hidden-xs hidden-xs btn-group" bis_skin_checked="1">
                 <!-- Nút giao tòa nhà -->
+                <security:authorize access="hasRole('MANAGER')">
                 <button class="btn btn-xs btn-success" title="Giao khách hàng" onclick="assingmentCustomer(${tableList.id})">
                   <i class="fa-solid fa-person-circle-check bigger-120"></i>
                 </button>
+                </security:authorize>
                 <a href="/admin/customer-edit-${tableList.id}" class="btn btn-xs btn-info">
                   <i class="ace-icon fa fa-pencil bigger-120"></i>
                 </a>
+                <security:authorize access="hasRole('MANAGER')">
                 <button class="btn btn-xs btn-danger" title="Xóa khách hàng" onclick="deleteCustomer(${tableList.id})">
                   <i class="ace-icon fa fa-trash-o bigger-120"></i>
                 </button>
+                </security:authorize>
               </div>
             </display:column>
           </display:table>

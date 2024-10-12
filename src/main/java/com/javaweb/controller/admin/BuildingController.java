@@ -39,7 +39,7 @@ public class BuildingController {
             Long staffId = SecurityUtils.getPrincipal().getId();
             params.put("staffId", staffId) ;
         }else{
-            params.put("staffId","") ;
+            params.put("staffId",params.get("staffId")) ;
         }
         BuildingSearchResponse bsrep = new BuildingSearchResponse() ;
         DisplayTagUtils.of(request, bsrep);

@@ -9,6 +9,7 @@ import com.javaweb.model.dto.CustomerDTO;
 import com.javaweb.repository.CustomerRepository;
 import com.javaweb.repository.TransactionRepository;
 import com.javaweb.repository.custom.TransactionRepositoryCustom;
+import com.javaweb.security.utils.SecurityUtils;
 import com.javaweb.service.ICustomerService;
 import com.javaweb.service.IUserService;
 import com.javaweb.utils.BuildingType;
@@ -38,6 +39,12 @@ public class CustomerController {
     @RequestMapping(value = "/admin/customer-list", method = RequestMethod.GET)
     public ModelAndView getCustomer(@ModelAttribute CustomerDTO customerDTO , @RequestParam Map<String ,Object> params, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("admin/customer/list") ;
+        if(SecurityUtils.getAuthorities().contains("ROLE_STAFF")){
+            Long staffId = SecurityUtils.getPrincipal().getId();
+            params.put("managementStaff", staffId) ;
+        }else{
+            params.put("managementStaff",params.get("managementStaff")) ;
+        }
         mav.addObject("modalSearch",customerDTO) ;
         mav.addObject("listStaffs",userService.getSaffs()) ;
         CustomerDTO cdto = new CustomerDTO() ;
@@ -62,8 +69,14 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("admin/customer/edit") ;
         mav.addObject("modalAdd" , dto) ;
         mav.addObject("TransactionType", TransactionType.transactionType()) ;
+        Long staid ;
+        if(SecurityUtils.getAuthorities().contains("ROLE_STAFF")){
+            staid = SecurityUtils.getPrincipal().getId();
 
-        List<TransactionEntity> listTranByCusID = transactionRepositoryCustom.findbyCustomerId(Id) ;
+        }else{
+            staid=null ;
+        }
+        List<TransactionEntity> listTranByCusID = transactionRepositoryCustom.findbyCustomerId(Id,staid) ;
         mav.addObject("listTranById",listTranByCusID ) ;
         return mav ;
     }

@@ -9,6 +9,7 @@ import com.javaweb.utils.StringUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
@@ -19,12 +20,13 @@ import java.util.stream.Collectors;
 
 @Repository
 @Primary
+@Transactional
 public class BuildingRepositoryimpl implements BuildingRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager ;
     public static void joinTable(Map<String,Object> params,List<String> typecode, StringBuilder sql) {
         String staffid =  String.valueOf(params.get("staffId"));
-        if (StringUtils.check(staffid) ) {
+        if (StringUtils.check(staffid) && (staffid != "null") ) {
             sql.append(" INNER JOIN  assignmentbuilding ON building.id = assignmentbuilding.buildingid ");
         }
 
@@ -44,12 +46,16 @@ public class BuildingRepositoryimpl implements BuildingRepositoryCustom {
                 }
             }
         }
+        String district =(String) params.get("district") ;
+        if(StringUtils.check(district)){
+            where.append(" AND building.district Like" + "'%" + district + "%' ") ;
+        }
     }
     // truy vấn phức tạp
     public static void querySpecial(Map<String,Object> params,List<String> typecode,StringBuilder where) {
         //staffid
         String staffid =  String.valueOf(params.get("staffId"));
-        if (StringUtils.check(staffid)) {
+        if (StringUtils.check(staffid) && (staffid != "null")) {
             where.append(" AND  assignmentbuilding.staffid = " + staffid);
         }
         //rentArea

@@ -12,11 +12,13 @@ import com.javaweb.model.response.StaffResponseDTO;
 import com.javaweb.repository.CustomerRepository;
 import com.javaweb.repository.UserRepository;
 import com.javaweb.repository.custom.CustomerRepositoryCustom;
+import com.javaweb.security.utils.SecurityUtils;
 import com.javaweb.service.ICustomerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
+@Transactional
 public class CustomerServiceimpl implements ICustomerService {
     @Autowired
     private CustomerRepositoryCustom customerRepositoryCustom ;
@@ -48,9 +51,15 @@ public class CustomerServiceimpl implements ICustomerService {
     }
 
     @Override
-    public CustomerDTO insertOrUpdateCustomer(CustomerDTO customerDTO) {
+    public void insertOrUpdateCustomer(CustomerDTO customerDTO) {
         CustomerEntity cusEntity = modelMapper.map(customerDTO,CustomerEntity.class) ;
-        return customerConverter.toCustomerDTO(customerRepository.save(cusEntity)) ;
+        customerRepository.save(cusEntity) ;
+        //fix trường hợp role nhân viên
+        if(SecurityUtils.getAuthorities().contains("ROLE_STAFF") && customerDTO.getId()!= null){
+                Long staffId = SecurityUtils.getPrincipal().getId();
+                customerRepositoryCustom.insert(staffId,customerDTO.getId());
+
+            }
     }
 
     @Override

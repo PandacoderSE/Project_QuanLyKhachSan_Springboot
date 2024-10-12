@@ -171,6 +171,7 @@
                         </div>
                     </div>
                     <div class="button_them_xoa" style="text-align: right; margin-right: 13px;">
+                        <security:authorize access="hasRole('MANAGER')">
                         <a href="/admin/building-edit">
                             <button class="btn btn-info">
                                 <i class="fa-solid fa-building-circle-check bigger-120"></i>
@@ -178,6 +179,7 @@
                         </a>
                         <button class="btn btn-danger" title="xóa tòa nhà" id="btnDeleteBuildings">
                            <i class="fa-solid fa-building-circle-xmark bigger-120"></i></button>
+                        </security:authorize>
                     </div>
                 </div>
                 <!--end Tìm kiếm -->

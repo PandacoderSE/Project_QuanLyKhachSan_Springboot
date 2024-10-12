@@ -10,4 +10,5 @@ import java.util.Objects;
 public interface CustomerRepositoryCustom {
     List<CustomerEntity> findAll(Map<String, Object> params, Pageable pageable) ;
     int countTotalItem(Map<String, Object> params);
+    void insert(Long staffid , Long customerid) ;
 }

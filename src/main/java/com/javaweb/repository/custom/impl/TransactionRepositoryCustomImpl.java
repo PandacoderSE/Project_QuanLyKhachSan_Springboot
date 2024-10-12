@@ -16,9 +16,12 @@ public class TransactionRepositoryCustomImpl implements TransactionRepositoryCus
     @PersistenceContext
     private EntityManager entityManager ;
     @Override
-    public List<TransactionEntity> findbyCustomerId(Long customerid) {
-        String sql = "SELECT * FROM transaction WHERE customerid = " + customerid ;
-        Query query = entityManager.createNativeQuery(sql, TransactionEntity.class) ;
+    public List<TransactionEntity> findbyCustomerId(Long customerid, Long st) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM transaction WHERE customerid = " + customerid) ;
+        if(st!=null){
+            sql.append(" and staffid=" +st) ;
+        }
+        Query query = entityManager.createNativeQuery(sql.toString(), TransactionEntity.class) ;
         return query.getResultList();
     }
 }

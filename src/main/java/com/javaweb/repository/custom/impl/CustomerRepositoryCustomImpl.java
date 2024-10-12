@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -18,13 +19,15 @@ import java.util.stream.Collectors;
 
 @Repository
 @Primary
+@Transactional
 public class CustomerRepositoryCustomImpl  implements CustomerRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager ;
     //join table
     public static void joinTable(Map<String,Object> params, StringBuilder sql) {
-        String staffid = (String) params.get("managementStaff");
-        if (StringUtils.check(staffid)) {
+        String staffid =  String.valueOf(params.get("managementStaff"));
+        //String staffid = (String) params.get("managementStaff");
+        if (StringUtils.check(staffid) && (staffid != "null")) {
             sql.append(" INNER JOIN  assignmentcustomer ON customer.id = assignmentcustomer.customerid ");
         }
 
@@ -47,9 +50,10 @@ public class CustomerRepositoryCustomImpl  implements CustomerRepositoryCustom {
     // truy vấn phức tạp
     public static void querySpecial(Map<String,Object> params, StringBuilder where) {
         //staffid
-        String staffid = (String) params.get("managementStaff");
+        //String staffid = (String) params.get("managementStaff");
+        String staffid =  String.valueOf(params.get("managementStaff"));
        //String staffid =  String.valueOf(params.get("managementStaff"));
-        if (StringUtils.check(staffid)) {
+        if (StringUtils.check(staffid) && (staffid != "null")) {
             where.append(" AND  assignmentcustomer.staffid = " + staffid);
         }
     }
@@ -81,5 +85,12 @@ public class CustomerRepositoryCustomImpl  implements CustomerRepositoryCustom {
         sql.append(where) ;
         Query query = entityManager.createNativeQuery(sql.toString(), CustomerEntity.class) ;
         return query.getResultList().size();
+    }
+
+    @Override
+    public void insert(Long staffid, Long customerid) {
+        String sql = "INSERT INTO assignmentcustomer (staffid, customerid) VALUES("+ staffid +","+customerid+")";
+        Query query = entityManager.createNativeQuery(sql);
+        query.executeUpdate();
     }
 }

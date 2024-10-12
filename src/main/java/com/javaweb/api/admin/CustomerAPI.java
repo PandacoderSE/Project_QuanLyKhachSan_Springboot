@@ -42,7 +42,8 @@ public class CustomerAPI {
     }
     @PostMapping
     public ResponseEntity<CustomerDTO> addOrUpdateCustomer(@RequestBody CustomerDTO customerDTO){
-        return ResponseEntity.ok(customerService.insertOrUpdateCustomer(customerDTO)) ;
+        customerService.insertOrUpdateCustomer(customerDTO) ;
+        return ResponseEntity.noContent().build()  ;
     }
     @PostMapping("/transactionof")
     public ResponseEntity<TransactionDTO> addTransactionCustomer(@RequestBody TransactionDTO transactionDTO){

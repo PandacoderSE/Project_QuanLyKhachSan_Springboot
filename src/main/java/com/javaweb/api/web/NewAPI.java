@@ -17,7 +17,8 @@ public class NewAPI {
     @PostMapping("/contact")
     public ResponseEntity<CustomerDTO> addOrUpdateCustomer(@RequestBody CustomerDTO customerDTO){
         System.out.println("ok");
-        return ResponseEntity.ok(customerService.insertOrUpdateCustomer(customerDTO)) ;
+        customerService.insertOrUpdateCustomer(customerDTO) ;
+        return ResponseEntity.noContent().build()  ;
     }
 	
 }
