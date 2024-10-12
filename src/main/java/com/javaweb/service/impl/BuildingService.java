@@ -17,12 +17,15 @@ import com.javaweb.repository.custom.BuildingRepositoryCustom;
 import com.javaweb.repository.custom.RentAreaRepositoryCustom;
 import com.javaweb.service.IBuildingService;
 import com.javaweb.service.IRentAreaService;
+import com.javaweb.utils.UploadFileUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +47,8 @@ public class BuildingService implements IBuildingService {
     private RentareaRepository rentAreaRepository;
     @Autowired
     private IRentAreaService iRentAreaService ;
+    @Autowired
+    private UploadFileUtils uploadFileUtils;
     @Override
     public List<BuildingSearchResponse> findAll(Map<String, Object> params, List<String> typeCode,Pageable pageable) {
         List<BuildingEntity> listSR = buildingRepositoryCustom.findAll(params,typeCode,pageable) ;
@@ -107,6 +112,7 @@ public class BuildingService implements IBuildingService {
             // Xử lý lại khi dùng cascade
             bnew.getItems().clear();
             bnew.getItems().addAll(iRentAreaService.listRentArea(dto.getRentArea(),bnew));
+            saveThumbnail(dto,bnew);
             buildingRepository.save(bnew) ;
         }else{
             BuildingEntity bnew = new BuildingEntity() ;
@@ -125,9 +131,28 @@ public class BuildingService implements IBuildingService {
             bnew.setRentpricedescription(dto.getRentPriceDescription());
             bnew.setAvatar(dto.getImage());
             bnew.setItems(iRentAreaService.listRentArea(dto.getRentArea(),bnew));
+            saveThumbnail(dto,bnew);
             buildingRepository.save(bnew) ;
         }
         return dto ;
+    }
+    private void saveThumbnail(BuildingDTO bdto, BuildingEntity buildingEntity)
+    {
+        String path = "/building/" + bdto.getImageName();
+        if (null != bdto.getImageBase64())
+        {
+            if (null != buildingEntity.getAvatar())
+            {
+                if (!path.equals(buildingEntity.getAvatar()))
+                {
+                    File file = new File("G://JavaBackend/Project Version Not Cascade/Project_QuanLyKhachSan_Springboot/uploads" + buildingEntity.getAvatar());
+                    file.delete();
+                }
+            }
+            byte[] bytes = Base64.decodeBase64(bdto.getImageBase64().getBytes());
+            uploadFileUtils.writeOrUpdate(path, bytes);
+            buildingEntity.setAvatar(path);
+        }
     }
 
     @Override

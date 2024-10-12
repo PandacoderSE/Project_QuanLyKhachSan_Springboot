@@ -201,8 +201,18 @@
                         </div>
                         <div class="form-group">
                             <label class="col-xs-3 title_text">Hình Đại Diện</label>
+                            <input class="col-xs-3 no-padding-right" type="file" id="uploadImage"/>
                             <div class="col-xs-9">
-                                <form:input  path="image" class="form-control" id="imageInput" />
+
+<%--                                <form:input  path="image" class="form-control" id="imageInput" />--%>
+                                    <c:if test="${not empty modelEdit.image}">
+                                        <c:set var="imagePath" value="/repository${modelEdit.image}"/>
+                                        <img src="${imagePath}" id="viewImage" width="300px" height="300px" style="margin-top: 50px">
+                                    </c:if>
+                                    <c:if test="${empty modelEdit.image}">
+                                        <img src="/admin/image/default.png" id="viewImage" width="300px" height="300px">
+                                    </c:if>
+
                             </div>
                         </div>
                         <div class="form-group">
@@ -231,6 +241,19 @@
 
 <%-- sử lý js --%>
 <script>
+    var imageBase64 = '';
+    var imageName = '';
+
+    function openImage(input, imageView) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#' +imageView).attr('src', reader.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
     <%--// sử dụng JS lấy data--%>
     $('#btnAddOrUpdateBuilding').click(function() {
         var data = {};
@@ -244,10 +267,16 @@
                 typecode.push(v.value);
 
             }
+            if (''!== imageBase64) {
+                data['imageBase64'] = imageBase64;
+                data['imageName'] = imageName;
+            }
+
         });
         data['typeCode'] = typecode;
         if(typecode!= ''){
             addOrUpdateBuilding(data) ;
+            console.log(data) ;
         }else{
             window.location.href ="<c:url value="/admin/building-edit?typeCode=require" />" ;
         }
@@ -280,7 +309,18 @@
             },
         })
     }
-        // call API : jQuery AJAX Methods
+    $('#uploadImage').change(function (event) {
+        var reader = new FileReader();
+        var file = $(this)[0].files[0];
+        reader.onload = function(e){
+            imageBase64 = e.target.result;
+            imageName = file.name; // ten hinh khong dau, khoang cach. Dat theo format sau: a-b-c
+        };
+        reader.readAsDataURL(file);
+        openImage(this, "viewImage");
+    });
+
+    // call API : jQuery AJAX Methods
 
     // cách hủy thao tác
     $('#btnHuy').click(function (){

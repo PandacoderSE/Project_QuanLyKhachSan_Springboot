@@ -290,4 +290,5 @@ public class BuildingDTO extends AbstractDTO{
     public void setRentPriceDescription(String rentPriceDescription) {
         this.rentPriceDescription = rentPriceDescription;
     }
+
 }
