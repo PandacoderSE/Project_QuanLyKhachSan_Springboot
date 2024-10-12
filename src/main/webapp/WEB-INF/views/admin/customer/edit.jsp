@@ -28,7 +28,6 @@
                  <c:if test="${not empty modalAdd.id}">
                      <li class="active">Sửa khách hàng</li>
                  </c:if>
-                <li class="active">Thêm tòa nhà</li>
             </ul><!-- /.breadcrumb -->
         </div>
 
