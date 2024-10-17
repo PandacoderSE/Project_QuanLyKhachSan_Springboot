@@ -2,7 +2,7 @@ Hướng dẫn project
 <br>
 B1 : clone code trên 
 <br>
-B2 : improt DataBase bằng mySql 
+B2 : import DataBase bằng mySql 
 <br>
 B3 : Cài đặt tomcat 
 <br>
